@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>AI Video Generator</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFJIFZpZGVvIEdlbmVyYXRvciIsCiAgInNob3J0X25hbWUiOiAiVmlkZW9BSSIsCiAgImRlc2NyaXB0aW9uIjogIkNyZWF0ZSBhbWF6aW5nIHZpZGVvcyB3aXRoIEFJIC0gQ29tcGxldGVseSBGcmVlISIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjNUQ1Q0RFIiwKICAidGhlbWVfY29sb3IiOiAiIzVENUNERSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M00zUnZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQXlOQ0F5TkNJK1BHUmxabk0rUEhONWJXSnZiQ0JwWkQwaWFXTnZiaUlnWm1sc2JEMGlJelUxTlVORVJTSStQSEJoZEdnZ1pEMGlUVEV5TGpZZ01TNHlZUzR4TGpJZ01TNHlJREV1TWlBeUxqWWdNQ0EyTGpZZ05tRXlMalFnTWk0MElEQWdNREF0TkRnZ01EQXROUzQwTFRFdU5pNHhMUzQwTFRNdE15NHpMUzQwTFRReU1EQWdNQ0F3TFRnZzRsRXdJREVnTVNBd0lEQWdNSHAzT0ZFd01DQXdMVGd6T0NBd0lEQWdNREI2SWk4K1BIQmhkR2dnWkQwaVRURTJMbUlnTVRkaE9TNHpJRGd1TnlBd0lEQXdMUzQ1SWpvdU9TNWtBaUlEUXlBek5TNWlQU0l2UGp3dmMzbHRZbTlzUGp3dlpHVm1jejQ4Y21WamRDQjNhV1IwYUQwaU1qUWlJR2hsYVdkb2REMGlNalFpSUhKNFBTSXlJaUJtYVd4c1BTSWpOVFUxUTBSRklpOCtQSEpsWTNRZ2VEMGlNaTQySWlCNVBTSXpMalFpSUhkcFpIUm9QU0l4T0M0NElpQm9aV2xuYUhROUlURTNMalVpSUhKNFBTSXhMak1pSUdacGJHdzlJaU0xTlRWRFJFVWlMejQ4TDNOMlp6ND0iLAogICAgICAic2l6ZXMiOiAiMjR4MjQiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTTNSdmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBeU5EZ2dNalE0SWo0OFpHVm1jejQ4YzNsdFltOXNJR2xrUFNKcFkyOXVJaUJtYVd4c1BTSWpOVFUxUTBSRklqNDhjR0YwYUNCa1BTSk5OVEJnTVRBZ1lURTFJREUxSURBZ01EQWdNekJnTVRCaE1UVWdNVFVnTUNBd0lEQXRNekFnTFRFd2VrMXpRak1nTkRjaE1UQWdNVFFnTUNBd01DQXRNamd1TXlBeUxqZG9MVEU1TGpWMk1UaGhOQ0EwSURBZ01EQWdPQ0E0ZGkwNFl6QXRNaTR5TFRFdU9DMDBMVE13ZGkwNFl6QXRNaTR5SURFdU9DMDBJRE11T1MwMExqRTVZV1VnTWk0MElESWdNQ0F3SURFZ09TMDJMalZhZDJrK0lqNDhjR0YwYUNCa1BTSk5OVEJnTVRCaE1UVWdNVFVnTUNBd01DQXpNRzh3SURrZ01USWdOVzlrY3pJZ01URWdNQ0F3SURBdE1UZ2dNUzB4TVNBeFlTSTJJRFlnTUNBd0lEQXRNVElnTVdJdE1UQWdNVEF0ZHpJZ01qQjZJajQ4TDNONWJXSnZiRDQ4TDJSbFpuTStQSEpsWTNRZ2QybGtkR2c5SWpJME9DSWdhR1ZwWjJoMFBTSXlORGdpSUhKNFBTSXlOQ0lnWm1sc2JEMGlJelUxTlVORVJTSXZQand2YzNabkxSNEpQQ2hsYzNOMGdUNUJKRFoxYkRNWkZnQUNBQU9CZ1VaQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUJBQUpCUVVBZ0VwWlFVSWh3QWdJQS90ZWpPWkJNNGVZakdaVk1GRERXQ3VBRDFJUk9SV2VaQklNQS9Ebi9WcTh1Zkl2Qm1OT0JIUlN1WGhUa1A0RHcyQTF0akpHSENEZ2g1QVdBQUlCQVVBZ0ZwWlFBOGdJQVZ0YUdWdGRIVTlZbUZqYTJkeWIzVnVaQzFqYjJ4dmNqcGJZbUZqYTJkeWIzVnVaQzFqYjJ4dmNpNHBJQT09IgogICAgICAic2l6ZXMiOiAiMjU2eDI1NiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNM1J2Y21jdk1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqQWdNQ0ExTVRJZ05URXlJajQ4WkdWbWN6NDhjM2x0WW05c0lHbGtQU0pwWTI5dUlpQm1hV3hzUFNJak5UVTFRMEZEUVU1UlZVUXZVVWxFZFdnU1hBQUdqUWR4RTVBRUJtbFFacCtHQXdZaEEwQUVCa2xVYU5pTEZBd2hoQW1BRUJrM1VhTWlMSEF3aDNBbGpnTUVCa1YxNmVtVkVSaCtGQXdpN0FsamdNRUJrMFJBcFFWRkJnMEFXQThJQkEwYUpncFNWVUY2VmcwanpBbGk0QXdnN0JGdGh4RHBEeE5vZXdGaGhGRVBPeFVTRlFSNFBBd3hCZUJCY0lBQUFBQUJZQUJCR2dZZEFBQUFBQUFBQUFBQUFCQUFCQU9LZE5xTUFBYTRwMVZBQVVMY1ZpRkJVREIzNWh0TzE1cUFWQWpEd3JaWkFTQStCU3plUFJxUXBqNjJsU0tzczdXQitBRGhaZE9xc1JCWXJJZUZUeC9HYWNEUVVKaEJJZFpoV3VBMFZCbWhiZVZzTkFJRFFlT21Wb1MzQUFBQVNBQkFHZ1lqRVFBQkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBRUFBQVYvQUJFYkJHTXo1cU5GQVZCWkxUTVV1dlZFZ1VZSGdZWGdWREFzQUpEajdvUUZyOVBybXdxdVVOek9KSXRocTdOWHJvNEhRMWdpZEdOZHBoUUpKRUZ3L0dNZXJnQUJaSmRCOUowYWR4VlZrU0lRMlZFZ1lNaEFVQUFBQVNBQkFHZ1lkUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFWL0FCRWJCR016cVgvK29nZElRNDhBQUFBU0FCQW1nWWJReUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFCVi9BQkViQlNBQi91UXh3dU9kVG5BTmZaU1ZMZEFBQUJJQUVBYUJpTlFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVZmd0FSR3dVZ2dROWlQdjJzMTlrQ3E4VDBCNHBWeGI0QUFBU0FCQW1nWWpNUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVZmd0FSR3dVZ2dROWlQdjJzVy8rcVFBZWdBRkpJRXpRUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQWxMOGk4UFE2QUE9PSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+    
+    <!-- Mobile optimized meta tags -->
+    <meta name="theme-color" content="#5D5CDE">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="VideoAI">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Icons for home screen -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGRlZnM+PHN5bWJvbCBpZD0iaWNvbiIgZmlsbD0iIzU1NUNERSI+PHBhdGggZD0iTTEyLjYgMS4yYS4xLjIgMS4yIDEuMiAyLjYgMCA2LjYgNmEyLjQgMi40IDAgMCAwLTQ4IDAtNS40LTEuNi4xLS40LTMtMy4zLS40LTQyMDAgMCAwLTggNEUwIDEgMSAwIDAgMHogdzgyMCAwIDAtODA4IDAgMCAwIDAiLz48cGF0aCBkPSJNMTYuYiAxN2E5LjMgOC43IDAgMDAtLjkiOi45LmRBaUJEUXlBek5TNWJQUyIvPjwvc3ltYm9sPjwvZGVmcz48cmVjdCB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjNTU1Q0RFIi8+PHJlY3QgeD0iMi42IiB5PSIzLjQiIHdpZHRoPSIxOC44IiBoZWlnaHQ9IjE3LjUiIHJ4PSIxLjMiIGZpbGw9IiM1NTVDREU/L7Cw2Z7==">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4C4BCF'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .mobile-padding { padding: 1rem 0.75rem; }
+            .mobile-text { font-size: 0.875rem; }
+            .mobile-button { min-height: 48px; font-size: 16px; }
+            
+            /* Prevent zoom on inputs */
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+            
+            /* Hide scrollbars on mobile but keep functionality */
+            ::-webkit-scrollbar {
+                width: 0px;
+                background: transparent;
+            }
+        }
+        
+        /* Touch feedback */
+        .touch-feedback:active {
+            transform: scale(0.98);
+            transition: transform 0.1s;
+        }
+        
+        /* Improved mobile video player */
+        video {
+            max-height: 70vh;
+        }
+        
+        /* Status indicator for PWA install */
+        .pwa-banner {
+            background: linear-gradient(45deg, #5D5CDE, #4C4BCF);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-200 overflow-x-hidden">
+    <!-- PWA Install Banner -->
+    <div id="installBanner" class="pwa-banner text-white p-3 text-center hidden">
+        <div class="flex items-center justify-between max-w-4xl mx-auto">
+            <div class="flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                <span class="text-sm">Install VideoAI App</span>
+            </div>
+            <div class="flex space-x-2">
+                <button id="installApp" class="bg-white text-primary px-3 py-1 rounded text-sm font-medium touch-feedback">Install</button>
+                <button id="dismissBanner" class="text-white/80 p-1">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="min-h-screen flex flex-col">
+        <!-- Mobile-Optimized Header -->
+        <header class="bg-gradient-to-r from-primary to-primary-dark text-white p-4 shadow-lg sticky top-0 z-40">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-xl md:text-3xl font-bold text-center">🎬 VideoAI</h1>
+                <p class="text-center mt-1 text-white/90 text-sm md:text-base">AI Video Generator</p>
+                <div class="text-center mt-2">
+                    <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs md:text-sm font-medium">
+                        100% FREE • No Sign-up
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 mobile-padding max-w-4xl mx-auto w-full">
+            <!-- Quick Actions (Mobile First) -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mb-4 md:hidden">
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="quickText" class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-center touch-feedback">
+                        <div class="text-blue-600 dark:text-blue-400 mb-1">📝</div>
+                        <div class="text-xs font-medium text-blue-800 dark:text-blue-300">Text to Video</div>
+                    </button>
+                    <button id="quickVoice" class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-center touch-feedback">
+                        <div class="text-purple-600 dark:text-purple-400 mb-1">🎤</div>
+                        <div class="text-xs font-medium text-purple-800 dark:text-purple-300">Voice to Video</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 mb-4">
+                <h2 class="text-lg md:text-xl font-semibold text-gray-800 dark:text-white mb-4">Describe Your Video</h2>
+                
+                <!-- Text Input -->
+                <div class="mb-4">
+                    <label for="textInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        What video do you want to create?
+                    </label>
+                    <textarea 
+                        id="textInput" 
+                        placeholder="Example: A cat playing with a ball in a sunny garden..."
+                        class="w-full h-20 md:h-24 p-3 mobile-button border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                    ></textarea>
+                </div>
+
+                <!-- Voice Input (Mobile Optimized) -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Or record your voice
+                    </label>
+                    <button 
+                        id="recordBtn" 
+                        class="w-full md:w-auto flex items-center justify-center px-4 py-3 mobile-button bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 touch-feedback"
+                    >
+                        <svg id="micIcon" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span id="recordText">🎤 Tap to Record</span>
+                    </button>
+                    <div id="recordingStatus" class="mt-2 text-sm text-red-600 dark:text-red-400 hidden text-center">
+                        🔴 Recording... Tap stop when finished
+                    </div>
+                    <div id="voiceResult" class="mt-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 hidden"></div>
+                </div>
+
+                <!-- Mobile-Optimized Advanced Options -->
+                <div class="mb-4">
+                    <button id="advancedToggle" class="w-full text-left p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-primary dark:text-primary font-medium text-sm flex items-center justify-between touch-feedback">
+                        <span>⚙️ Video Settings</span>
+                        <svg id="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div id="advancedOptions" class="hidden mt-3 space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Duration</label>
+                                <select id="duration" class="w-full p-3 mobile-button border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                    <option value="5">5 seconds</option>
+                                    <option value="10" selected>10 seconds (Max)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="aspectRatio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Format</label>
+                                <select id="aspectRatio" class="w-full p-3 mobile-button border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                    <option value="16:9" selected>📺 Landscape (16:9)</option>
+                                    <option value="9:16">📱 Vertical (9:16)</option>
+                                    <option value="1:1">⬜ Square (1:1)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Upload (Mobile Optimized) -->
+                <div class="mb-4">
+                    <label for="imageInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        📸 Add Reference Image (Optional)
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="file" 
+                            id="imageInput" 
+                            accept="image/*" 
+                            class="w-full p-3 mobile-button border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary-dark touch-feedback"
+                        >
+                    </div>
+                </div>
+
+                <!-- Tips for Longer Videos -->
+                <div class="mb-6">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+                        <h3 class="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2 flex items-center">
+                            💡 Want Longer Videos?
+                        </h3>
+                        <div class="text-xs text-blue-700 dark:text-blue-400 space-y-1">
+                            <p>• <strong>Current limit:</strong> 10 seconds per generation (AI technology constraint)</p>
+                            <p>• <strong>Create longer videos:</strong> Generate multiple 10-second clips and combine them</p>
+                            <p>• <strong>Pro tip:</strong> Use video editing apps to merge clips into longer videos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button (Mobile Optimized) -->
+                <button 
+                    id="generateBtn" 
+                    class="w-full py-4 mobile-button bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center touch-feedback shadow-lg"
+                >
+                    <svg id="generateIcon" class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                    </svg>
+                    🎬 Generate Video
+                </button>
+            </div>
+
+            <!-- Generation Status -->
+            <div id="statusSection" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 mb-4 hidden">
+                <div class="flex items-center justify-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mr-3"></div>
+                    <span class="text-gray-700 dark:text-gray-300">Creating your video...</span>
+                </div>
+                <div class="mt-4 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <p class="text-sm text-gray-600 dark:text-gray-400" id="statusText">Initializing AI video generation...</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6 hidden">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">🎉 Your Video is Ready!</h2>
+                <div id="videoContainer" class="text-center">
+                    <video id="generatedVideo" controls class="w-full max-w-2xl mx-auto rounded-lg shadow-lg" playsinline webkit-playsinline>
+                        Your browser does not support the video tag.
+                    </video>
+                    
+                    <!-- Mobile-Optimized Download Section -->
+                    <div class="mt-6 space-y-3">
+                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4">
+                            <h3 class="text-lg font-semibold text-green-800 dark:text-green-300 mb-2 flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                                📱 Free Download Ready!
+                            </h3>
+                            <p class="text-green-700 dark:text-green-400 text-sm mb-3 text-center">No watermarks • No limits • Completely free</p>
+                            
+                            <!-- Mobile Action Buttons -->
+                            <div class="space-y-3">
+                                <a id="downloadBtn" href="#" download="generated-video.mp4" class="w-full px-6 py-4 mobile-button bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 flex items-center justify-center font-semibold touch-feedback">
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    📥 Download Video
+                                </a>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button id="shareBtn" class="px-4 py-3 mobile-button bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 flex items-center justify-center touch-feedback">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
+                                        </svg>
+                                        Share
+                                    </button>
+                                    <button id="saveBtn" class="px-4 py-3 mobile-button bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors duration-200 flex items-center justify-center touch-feedback">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"></path>
+                                        </svg>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="generateNewBtn" class="w-full px-6 py-4 mobile-button bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors duration-200 flex items-center justify-center font-semibold touch-feedback">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                            </svg>
+                            🎬 Create Another Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div id="errorSection" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-xl p-6 hidden">
+                <h3 class="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">❌ Generation Failed</h3>
+                <p id="errorMessage" class="text-red-700 dark:text-red-400"></p>
+                <button id="retryBtn" class="mt-4 w-full px-4 py-3 mobile-button bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 touch-feedback">
+                    🔄 Try Again
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-50 dark:bg-gray-800 p-4 text-center text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-8">
+            <p class="mb-1">🤖 Powered by Advanced AI • 100% Free • No Watermarks</p>
+            <p>✓ Works offline ✓ No registration ✓ Unlimited use</p>
+        </footer>
+    </div>
+
+    <script>
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'videoai-v1';
+                    const urlsToCache = [
+                        '/',
+                        'https://cdn.tailwindcss.com'
+                    ];
+                    
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(urlsToCache))
+                        );
+                    });
+                    
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then(registration => console.log('SW registered'))
+                    .catch(error => console.log('SW registration failed'));
+            });
+        }
+
+        // PWA Install Banner
+        let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installApp = document.getElementById('installApp');
+        const dismissBanner = document.getElementById('dismissBanner');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.classList.remove('hidden');
+        });
+
+        installApp.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBanner.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        dismissBanner.addEventListener('click', () => {
+            installBanner.classList.add('hidden');
+        });
+
+        // Dark mode setup
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // DOM elements
+        const textInput = document.getElementById('textInput');
+        const recordBtn = document.getElementById('recordBtn');
+        const recordText = document.getElementById('recordText');
+        const micIcon = document.getElementById('micIcon');
+        const recordingStatus = document.getElementById('recordingStatus');
+        const voiceResult = document.getElementById('voiceResult');
+        const advancedToggle = document.getElementById('advancedToggle');
+        const advancedOptions = document.getElementById('advancedOptions');
+        const chevron = document.getElementById('chevron');
+        const duration = document.getElementById('duration');
+        const aspectRatio = document.getElementById('aspectRatio');
+        const imageInput = document.getElementById('imageInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const statusSection = document.getElementById('statusSection');
+        const statusText = document.getElementById('statusText');
+        const resultsSection = document.getElementById('resultsSection');
+        const videoContainer = document.getElementById('videoContainer');
+        const generatedVideo = document.getElementById('generatedVideo');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const generateNewBtn = document.getElementById('generateNewBtn');
+        const errorSection = document.getElementById('errorSection');
+        const errorMessage = document.getElementById('errorMessage');
+        const retryBtn = document.getElementById('retryBtn');
+        const quickText = document.getElementById('quickText');
+        const quickVoice = document.getElementById('quickVoice');
+
+        // Voice recording variables
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        // Quick action buttons
+        quickText.addEventListener('click', () => {
+            textInput.focus();
+            textInput.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        quickVoice.addEventListener('click', () => {
+            recordBtn.click();
+        });
+
+        // Advanced options toggle
+        advancedToggle.addEventListener('click', () => {
+            const isHidden = advancedOptions.classList.contains('hidden');
+            if (isHidden) {
+                advancedOptions.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                advancedOptions.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // Voice recording functionality
+        recordBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        
+                        // Convert speech to text using Web Speech API
+                        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                            const recognition = new SpeechRecognition();
+                            recognition.continuous = false;
+                            recognition.interimResults = false;
+                            recognition.lang = 'en-US';
+
+                            recognition.onresult = event => {
+                                const transcript = event.results[0][0].transcript;
+                                voiceResult.textContent = `🎤 Voice input: "${transcript}"`;
+                                voiceResult.classList.remove('hidden');
+                                textInput.value = transcript;
+                                showNotification('Voice converted to text!', 'success');
+                            };
+
+                            recognition.onerror = () => {
+                                voiceResult.textContent = '❌ Voice recognition failed. Please try again.';
+                                voiceResult.classList.remove('hidden');
+                            };
+
+                            recognition.start();
+                        } else {
+                            // Fallback for demo
+                            voiceResult.textContent = '🎤 Voice recorded! Please type your description in the text field.';
+                            voiceResult.classList.remove('hidden');
+                        }
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordText.textContent = '🛑 Stop Recording';
+                    recordBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    recordBtn.classList.add('bg-gray-500', 'hover:bg-gray-600');
+                    recordingStatus.classList.remove('hidden');
+                    micIcon.classList.add('animate-pulse');
+                } catch (error) {
+                    showError('❌ Microphone access denied. Please allow microphone access and try again.');
+                }
+            } else {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                recordText.textContent = '🎤 Tap to Record';
+                recordBtn.classList.remove('bg-gray-500', 'hover:bg-gray-600');
+                recordBtn.classList.add('bg-red-500', 'hover:bg-red-600');
+                recordingStatus.classList.add('hidden');
+                micIcon.classList.remove('animate-pulse');
+            }
+        });
+
+        // Register Poe handler for video generation
+        if (window.Poe) {
+            window.Poe.registerHandler('video-handler', (result, context) => {
+                const msg = result.responses[0];
+
+                if (msg.status === 'error') {
+                    hideStatus();
+                    showError(`❌ Video generation failed: ${msg.statusText || 'Unknown error'}`);
+                } else if (msg.status === 'incomplete') {
+                    statusText.textContent = msg.content || '🤖 AI is creating your video...';
+                } else if (msg.status === 'complete') {
+                    hideStatus();
+                    if (msg.attachments && msg.attachments.length > 0) {
+                        const videoAttachment = msg.attachments.find(att => att.mimeType.startsWith('video/'));
+                        if (videoAttachment) {
+                            showVideo(videoAttachment.url, videoAttachment.name);
+                            showNotification('🎉 Video created successfully!', 'success');
+                        } else {
+                            showError('❌ No video was generated. Please try again with a different description.');
+                        }
+                    } else {
+                        showError('❌ No video was generated. Please try again with a different description.');
+                    }
+                }
+            });
+        }
+
+        // Generate video function
+        async function generateVideo() {
+            const description = textInput.value.trim();
+            if (!description) {
+                showError('❌ Please provide a description for your video.');
+                return;
+            }
+
+            hideResults();
+            hideError();
+            showStatus();
+
+            // Build the prompt with parameters
+            let prompt = description;
+            
+            // Add duration parameter
+            const durationValue = duration.value;
+            if (durationValue !== '10') { // 10 is default
+                prompt += ` --duration ${durationValue}`;
+            }
+
+            // Add aspect ratio parameter
+            const aspectValue = aspectRatio.value;
+            if (aspectValue !== '16:9') { // 16:9 is default
+                prompt += ` --aspect-ratio ${aspectValue}`;
+            }
+
+            try {
+                const attachments = [];
+                
+                // Handle image upload if provided
+                if (imageInput.files && imageInput.files[0]) {
+                    attachments.push(imageInput.files[0]);
+                }
+
+                await window.Poe.sendUserMessage(`@Runway-Gen-4-Turbo ${prompt}`, {
+                    handler: 'video-handler',
+                    stream: true,
+                    openChat: false,
+                    attachments: attachments
+                });
+            } catch (error) {
+                hideStatus();
+                if (error.errorType === 'USER_REJECTED_CONFIRMATION') {
+                    showError('❌ Video generation was cancelled. Please try again.');
+                } else {
+                    showError(`❌ Failed to start video generation: ${error.message}`);
+                }
+            }
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', generateVideo);
+        generateNewBtn.addEventListener('click', () => {
+            hideResults();
+            hideError();
+            textInput.value = '';
+            voiceResult.classList.add('hidden');
+            imageInput.value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        retryBtn.addEventListener('click', () => {
+            hideError();
+            generateVideo();
+        });
+
+        // Share functionality (Mobile optimized)
+        shareBtn.addEventListener('click', async () => {
+            const videoUrl = generatedVideo.src;
+            if (navigator.share && videoUrl) {
+                try {
+                    await navigator.share({
+                        title: '🎬 AI Generated Video',
+                        text: 'Check out this amazing video I created with AI! 🤖',
+                        url: videoUrl
+                    });
+                    showNotification('📤 Shared successfully!', 'success');
+                } catch (error) {
+                    // Fallback to copying URL
+                    if (navigator.clipboard && videoUrl) {
+                        await navigator.clipboard.writeText(videoUrl);
+                        showNotification('📋 Video URL copied to clipboard!', 'success');
+                    } else {
+                        showNotification('❌ Sharing not supported on this device', 'error');
+                    }
+                }
+            } else if (navigator.clipboard && videoUrl) {
+                await navigator.clipboard.writeText(videoUrl);
+                showNotification('📋 Video URL copied to clipboard!', 'success');
+            }
+        });
+
+        // Save to gallery functionality
+        saveBtn.addEventListener('click', () => {
+            downloadBtn.click();
+            showNotification('💾 Video saved to downloads!', 'success');
+        });
+
+        // Helper functions
+        function showStatus() {
+            statusSection.classList.remove('hidden');
+            generateBtn.disabled = true;
+            statusText.textContent = '🚀 Initializing AI video generation...';
+            statusSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideStatus() {
+            statusSection.classList.add('hidden');
+            generateBtn.disabled = false;
+        }
+
+        function showVideo(videoUrl, filename) {
+            generatedVideo.src = videoUrl;
+            downloadBtn.href = videoUrl;
+            downloadBtn.download = filename || 'ai-generated-video.mp4';
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideResults() {
+            resultsSection.classList.add('hidden');
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorSection.classList.remove('hidden');
+            generateBtn.disabled = false;
+            errorSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideError() {
+            errorSection.classList.add('hidden');
+        }
+
+        // Mobile-optimized notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const isMobile = window.innerWidth <= 768;
+            
+            notification.className = `fixed ${isMobile ? 'top-20 left-4 right-4' : 'top-4 right-4'} z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform ${isMobile ? 'translate-y-[-100px]' : 'translate-x-full'}`;
+            
+            const colors = {
+                success: 'bg-green-500 text-white',
+                error: 'bg-red-500 text-white',
+                info: 'bg-blue-500 text-white'
+            };
+            
+            notification.className += ` ${colors[type] || colors.info}`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span class="flex-1 text-sm md:text-base">${message}</span>
+                    <button class="ml-3 text-white/80 hover:text-white p-1 touch-feedback" onclick="this.parentElement.parentElement.remove()">
+                        ✕
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Slide in
+            setTimeout(() => {
+                if (isMobile) {
+                    notification.classList.remove('translate-y-[-100px]');
+                } else {
+                    notification.classList.remove('translate-x-full');
+                }
+            }, 100);
+            
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                if (isMobile) {
+                    notification.classList.add('translate-y-[-100px]');
+                } else {
+                    notification.classList.add('translate-x-full');
+                }
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Mobile haptic feedback (if available)
+        function vibrate(pattern = [50]) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(pattern);
+            }
+        }
+
+        // Add haptic feedback to important buttons
+        generateBtn.addEventListener('click', () => vibrate([50]));
+        downloadBtn.addEventListener('click', () => vibrate([100, 50, 100]));
+        shareBtn.addEventListener('click', () => vibrate([50]));
+
+        // Prevent zoom on double tap for specific elements
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
+                    event.preventDefault();
+                }
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Show install prompt on first visit
+        setTimeout(() => {
+            if (!localStorage.getItem('pwa-prompt-shown')) {
+                showNotification('📱 Add this app to your home screen for the best experience!', 'info');
+                localStorage.setItem('pwa-prompt-shown', 'true');
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
